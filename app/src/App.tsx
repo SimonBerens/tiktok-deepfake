@@ -13,6 +13,7 @@ function App() {
         const socket = io("http://localhost:5000");
         socket.on('video_queued', ({video_idx}) => {
             videoIdxQueue.push(video_idx);
+            setPlayingDefault(false);
         });
     });
     console.log(videoIdxQueue);
@@ -20,6 +21,7 @@ function App() {
         <div className="App">
             <ReactPlayer
                 key={counter}
+                height={"700px"}
                 controls
                 playing
                 url={[
