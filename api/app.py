@@ -2,6 +2,9 @@ import time
 from flask import Flask, request, jsonify
 from flask_socketio import SocketIO
 from werkzeug.exceptions import BadRequest
+from google.protobuf.json_format import MessageToDict
+from dialogflow import get_response
+
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -21,7 +24,9 @@ def handle_raw_text():
     if not raw_text:
         raise BadRequest("Expected a rawText field in JSON body")
     print(f"Got raw text: {raw_text}")
-    resp = jsonify(success=True)
+    response = get_response(raw_text)
+    resp = jsonify(MessageToDict(response))
+    # TODO: call queue_video with the video ID from response
     return resp
 
 
