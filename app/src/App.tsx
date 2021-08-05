@@ -22,7 +22,6 @@ function App() {
             <ReactPlayer
                 key={counter}
                 height={"700px"}
-                controls
                 playing
                 url={[
                     {src: `video${videoIdxQueue[0] ?? 0}.webm`, type: 'video/webm'},
