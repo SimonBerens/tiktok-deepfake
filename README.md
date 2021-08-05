@@ -24,7 +24,7 @@ npm install
 ## Run
 ```
 cd api
-pipenv run flask run
+pipenv run flask run -h 0.0.0.0
 cd ../app
 npm start
 ```
