@@ -24,8 +24,8 @@ def queue_video(video_type=None):
     return "success"
 
 
-before_filter = defaultdict(lambda: time.time_ns())
-after_filter = defaultdict(lambda: time.time_ns())
+before_filter = defaultdict(int)
+after_filter = defaultdict(int)
 
 
 @app.route("/api/rawtext", methods=["GET", "POST"])
