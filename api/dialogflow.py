@@ -1,3 +1,4 @@
+from functools import lru_cache
 import dialogflow_v2 as dialogflow
 from google.api_core.exceptions import InvalidArgument
 
@@ -6,11 +7,17 @@ import os
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "tiktok-lmiy-172b3a9cdcfb.json"
 
 
-def get_response(text_to_be_analyzed):
+@lru_cache(None)
+def get_client():
+    return dialogflow.SessionsClient()
+
+
+@lru_cache(1024)
+def get_response(text_to_be_analyzed: str):
     DIALOGFLOW_PROJECT_ID = "tiktok-lmiy"
     DIALOGFLOW_LANGUAGE_CODE = "en-US"
     SESSION_ID = "current-user-id"
-    session_client = dialogflow.SessionsClient()
+    session_client = get_client()
     session = session_client.session_path(DIALOGFLOW_PROJECT_ID, SESSION_ID)
     text_input = dialogflow.types.TextInput(
         text=text_to_be_analyzed, language_code=DIALOGFLOW_LANGUAGE_CODE
@@ -33,4 +40,4 @@ def get_response(text_to_be_analyzed):
 
 
 if __name__ == "__main__":
-    get_response("hello")
+    result = get_response("hello")
