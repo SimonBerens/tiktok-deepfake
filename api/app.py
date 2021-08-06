@@ -13,9 +13,14 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 
 
 @app.route("/queue_video", methods=["POST"])
-def queue_video():
-    video_idx = request.json["video_idx"]
-    socketio.emit("video_queued", {"video_idx": random.choice(NUM_VIDEOS[video_idx])})
+def queue_video(video_type=None):
+    if not video_type:
+        video_type = request.json["video_type"]
+    socketio.emit("video_queued",
+                  {
+                      "video_type": video_type,
+                      "video_idx": random.randint(0, NUM_VIDEOS[video_type] - 1)
+                  })
     return "success"
 
 

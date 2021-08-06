@@ -5,18 +5,18 @@ import ReactPlayer from 'react-player';
 
 function App() {
 
-    const [videoIdxQueue] = useState<Array<number>>([]);
+    const [videoIdxQueue] = useState<Array<[number, number]>>([]);
     const [playingDefault, setPlayingDefault] = useState<boolean>(true);
     const [counter, setCounter] = useState<number>(0);
 
     useEffect(() => {
         const socket = io("http://localhost:5000");
-        socket.on('video_queued', ({video_idx}) => {
-            videoIdxQueue.push(video_idx);
+        socket.on('video_queued', ({video_type, video_idx}) => {
+            videoIdxQueue.push([video_type, video_idx]);
             setPlayingDefault(false);
         });
-    });
-    console.log(videoIdxQueue);
+    }, []);
+    const [a, b] = videoIdxQueue[0] ?? [0, 0];
     return (
         <div className="App">
             <ReactPlayer
@@ -24,10 +24,11 @@ function App() {
                 height={"700px"}
                 playing
                 url={[
-                    {src: `video${videoIdxQueue[0] ?? 0}.webm`, type: 'video/webm'},
+                    {src: `${a}/${a}-${b}.mp4`, type: 'video/mp4'},
                 ]}
                 onEnded={() => {
                     console.log('ended');
+                    console.log(videoIdxQueue);
                     if (!playingDefault) {
                         videoIdxQueue.splice(0, 1);
                     }
