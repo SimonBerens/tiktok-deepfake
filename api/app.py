@@ -43,11 +43,14 @@ def handle_raw_text():
     response = get_response(raw_text)
     resp = jsonify(MessageToDict(response))
 
-    if time.time_ns() - after_filter[resp] < 60 * 10 ** 9:
-        return ""
-    after_filter[resp] = time.time_ns()
+    vid_type = int(response.fulfillment_text.split(' ')[-1])
 
-    # TODO: call queue_video with the video ID from response
+    if time.time_ns() - after_filter[vid_type] < 60 * 10 ** 9:
+        return ""
+    after_filter[vid_type] = time.time_ns()
+
+    queue_video(vid_type)
+
     return resp
 
 
