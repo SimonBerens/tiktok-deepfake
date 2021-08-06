@@ -5,6 +5,8 @@ from werkzeug.exceptions import BadRequest
 from google.protobuf.json_format import MessageToDict
 from dialogflow import get_response
 from collections import defaultdict
+from video_config import NUM_VIDEOS
+import random
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -13,7 +15,7 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 @app.route("/queue_video", methods=["POST"])
 def queue_video():
     video_idx = request.json["video_idx"]
-    socketio.emit("video_queued", {"video_idx": video_idx, "time": time.time_ns()})
+    socketio.emit("video_queued", {"video_idx": random.choice(NUM_VIDEOS[video_idx])})
     return "success"
 
 
