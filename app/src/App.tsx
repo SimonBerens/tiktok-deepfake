@@ -18,10 +18,10 @@ function App() {
     }, []);
     const [a, b] = videoIdxQueue[0] ?? [0, 0];
     return (
-        <div className="App">
+        <div className="App" style={{backgroundColor: "black"}}>
             <ReactPlayer
                 key={counter}
-                height={"700px"}
+                height={"720px"}
                 playing
                 url={[
                     {src: `${a}/${a}-${b}.mp4`, type: 'video/mp4'},
